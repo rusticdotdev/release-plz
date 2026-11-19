@@ -1,0 +1,124 @@
+name: release-plz
+description: Run the rusticdotdev fork of release-plz, which adds the sync-changelog command.
+
+inputs:
+  command:
+    description: >-
+      The release-plz command to run. Accepted values: `release-pr`, `release`, `sync-changelog`.
+      If unspecified, this action runs `release-pr` and then `release`.
+    required: false
+  pr:
+    description: Number of the release PR. Only used by `sync-changelog`.
+    required: false
+  version:
+    description: Version of the fork to install.
+    default: 0.4.4-rusticdotdev.1
+    required: false
+
+outputs:
+  pr:
+    description: The release PR opened by release-plz.
+    value: ${{ steps.release-plz.outputs.pr }}
+  prs_created:
+    description: Whether release-plz created any release PR.
+    value: ${{ steps.release-plz.outputs.prs_created }}
+  releases:
+    description: The JSON output of the `release` command.
+    value: ${{ steps.release-plz.outputs.releases }}
+  releases_created:
+    description: Whether release-plz released any package.
+    value: ${{ steps.release-plz.outputs.releases_created }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install cargo-semver-checks
+      if: ${{ inputs.command == '' || inputs.command == 'release-pr' }}
+      uses: taiki-e/install-action@75a7c0f87bd666af3cdb75c5b9e9d03ab6044e6f # v2.90.6
+      with:
+        tool: cargo-semver-checks@0.51
+    - name: Install cargo-binstall
+      uses: cargo-bins/cargo-binstall@5885714d0a40a14b2535c6ffc051fd8e49aa9665 # v1.27.0
+      env:
+        BINSTALL_VERSION: 1.27.0
+    - name: Install release-plz
+      shell: bash
+      # Download the pre-built binary from the releases of the fork.
+      # `--git` makes cargo-binstall read the fork's manifest instead of the crates.io one.
+      # Without the `compile` strategy, a missing binary fails instead of building from source.
+      run: |
+        cargo-binstall "release-plz@${RELEASE_PLZ_VERSION}" \
+          --git https://github.com/rusticdotdev/release-plz \
+          --strategies=crate-meta-data \
+          --force \
+          --no-confirm
+      env:
+        RELEASE_PLZ_VERSION: ${{ inputs.version }}
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Configure git user from GitHub token
+      if: ${{ inputs.command != 'sync-changelog' }}
+      uses: release-plz/git-config@59144859caf016f8b817a2ac9b051578729173c4
+    - name: Run release-plz
+      id: release-plz
+      shell: bash
+      run: |
+        repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+
+        case "${COMMAND}" in
+          "" | release-pr | release | sync-changelog) ;;
+          *)
+            echo "unknown command '${COMMAND}'" >&2
+            exit 1
+            ;;
+        esac
+
+        if [[ -z "${COMMAND}" || "${COMMAND}" == "release-pr" ]]; then
+          echo "-- Running release-plz release-pr --"
+          release_pr_output=$(release-plz release-pr \
+            --git-token "${GITHUB_TOKEN}" \
+            --repo-url "${repo_url}" \
+            --forge github \
+            -o json)
+          echo "release_pr_output: ${release_pr_output}"
+          prs=$(echo "${release_pr_output}" | jq -c .prs)
+          if [[ "$(echo "${prs}" | jq 'length')" != "0" ]]; then
+            echo "prs_created=true" >> "${GITHUB_OUTPUT}"
+            echo "pr=$(echo "${prs}" | jq -c '.[0]')" >> "${GITHUB_OUTPUT}"
+          else
+            echo "prs_created=false" >> "${GITHUB_OUTPUT}"
+            echo "pr={}" >> "${GITHUB_OUTPUT}"
+          fi
+        fi
+
+        if [[ -z "${COMMAND}" || "${COMMAND}" == "release" ]]; then
+          echo "-- Running release-plz release --"
+          release_output=$(release-plz release \
+            --git-token "${GITHUB_TOKEN}" \
+            --forge github \
+            -o json)
+          echo "release_output: ${release_output}"
+          releases=$(echo "${release_output}" | jq -c .releases)
+          echo "releases=${releases}" >> "${GITHUB_OUTPUT}"
+          if [[ "$(echo "${releases}" | jq 'length')" != "0" ]]; then
+            echo "releases_created=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "releases_created=false" >> "${GITHUB_OUTPUT}"
+          fi
+        fi
+
+        if [[ "${COMMAND}" == "sync-changelog" ]]; then
+          echo "-- Running release-plz sync-changelog --"
+          # Without a PR number, release-plz uses the open release PR.
+          pr_number=()
+          if [[ -n "${PR_NUMBER}" ]]; then
+            pr_number=(--pr "${PR_NUMBER}")
+          fi
+          release-plz sync-changelog \
+            "${pr_number[@]}" \
+            --git-token "${GITHUB_TOKEN}" \
+            --repo-url "${repo_url}" \
+            --forge github
+        fi
+      env:
+        COMMAND: ${{ inputs.command }}
+        PR_NUMBER: ${{ inputs.pr }}
