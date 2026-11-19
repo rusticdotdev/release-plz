@@ -28,7 +28,7 @@ jobs:
     name: ${{ matrix.target }}
     permissions:
       contents: write # to upload release assets
-    if: github.repository_owner == 'release-plz' && startsWith(github.event.release.name, 'release-plz-v')
+    if: github.repository_owner == 'rusticdotdev' && startsWith(github.event.release.name, 'release-plz-v')
     runs-on: ${{ matrix.os }}
     strategy:
       # Run all jobs to completion regardless of errors.

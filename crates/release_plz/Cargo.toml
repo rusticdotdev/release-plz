@@ -1,6 +1,6 @@
 [package]
 name = "release-plz"
-version = "0.4.3"
+version = "0.4.4-rusticdotdev.1"
 edition.workspace = true
 description = "Update version and changelog based on semantic versioning and conventional commits"
 repository = "https://github.com/release-plz/release-plz"
@@ -59,7 +59,7 @@ toml_edit.workspace = true
 wiremock.workspace = true
 
 [package.metadata.binstall]
-pkg-url = "{ repo }/releases/download/release-plz-v{ version }/{ name }-{ target }{ archive-suffix }"
+pkg-url = "https://github.com/rusticdotdev/release-plz/releases/download/release-plz-v{ version }/{ name }-{ target }{ archive-suffix }"
 pkg-fmt = "tgz"
 
 [package.metadata.binstall.overrides.x86_64-pc-windows-msvc]
