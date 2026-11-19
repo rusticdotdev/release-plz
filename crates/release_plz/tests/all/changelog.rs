@@ -121,6 +121,7 @@ async fn release_plz_adds_custom_changelog() {
 <blockquote>
 
 
+<!-- release-plz:changelog-start {package} 0.1.0 -->
 owner: {username}, repo: {package}, link: https://localhost:3000/{username}/{package}
 
 == {package} - [0.1.0](https://localhost:3000/{username}/{package}/releases/tag/v0.1.0)
@@ -134,6 +135,7 @@ owner: {username}, repo: {package}, link: https://localhost:3000/{username}/{pac
 ### Contributors
 
 * @{username}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 

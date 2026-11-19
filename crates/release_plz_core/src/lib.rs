@@ -2,6 +2,7 @@ mod cargo;
 mod cargo_vcs_info;
 mod changelog;
 mod changelog_filler;
+mod changelog_guard;
 mod changelog_parser;
 mod clone;
 mod command;
@@ -33,6 +34,7 @@ mod url_utils;
 mod version;
 
 pub use changelog::*;
+pub use changelog_guard::{GuardedChangelog, guarded_changelogs};
 pub use command::*;
 pub use download::{PackageDownloader, read_package};
 pub use git::forge::{ForgeType, GitClient, GitForge, GitPr};

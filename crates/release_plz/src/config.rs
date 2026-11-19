@@ -3,6 +3,7 @@ use cargo_utils::to_utf8_pathbuf;
 use release_plz_core::{
     GitReleaseConfig, Publishable as _, ReleaseRequest,
     set_version::SetVersionRequest,
+    sync_changelog::SyncChangelogRequest,
     update_request::{DEFAULT_MAX_ANALYZE_COMMITS, UpdateRequest},
 };
 use schemars::JsonSchema;
@@ -104,6 +105,20 @@ impl Config {
             set_version_request = set_version_request.with_package_config(package, config.into());
         }
         Ok(set_version_request)
+    }
+
+    pub fn fill_sync_changelog_config(
+        &self,
+        sync_changelog_request: SyncChangelogRequest,
+    ) -> anyhow::Result<SyncChangelogRequest> {
+        let packages = self.merged_packages()?;
+        let mut sync_changelog_request = sync_changelog_request
+            .with_default_package_config(self.workspace.packages_defaults.clone().into());
+        for (package, config) in packages {
+            sync_changelog_request =
+                sync_changelog_request.with_package_config(package, config.into());
+        }
+        Ok(sync_changelog_request)
     }
 
     pub fn fill_release_config(

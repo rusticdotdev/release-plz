@@ -150,6 +150,9 @@ fn pr_body(
     let body_template = body_template.unwrap_or(DEFAULT_PR_BODY_TEMPLATE);
 
     let mut releases = packages_to_update.releases();
+    for release in &mut releases {
+        release.guard_changelog();
+    }
     let first_render = render_pr_body(&releases, body_template)?;
 
     if first_render.chars().count() > MAX_BODY_LEN {
@@ -212,5 +215,26 @@ mod tests {
         assert!(body.contains("## 🤖 New release"));
         assert!(body.contains("* `my-package`: 0.1.0 -> 0.1.1 (✓ API compatible changes)"));
         assert!(body.contains("- fixed a bug"));
+    }
+
+    #[test]
+    fn changelog_in_pr_body_is_guarded() {
+        let mut release: ReleaseInfo = serde_json::from_value(serde_json::json!({
+            "package": "my-package",
+            "title": "[0.1.1] - 2026-06-27",
+            "changelog": "### Other\n\n- fixed a bug",
+            "previous_version": "0.1.0",
+            "next_version": "0.1.1",
+            "breaking_changes": null,
+            "semver_check": "compatible",
+        }))
+        .unwrap();
+        release.guard_changelog();
+
+        let body = render_pr_body(&[release], DEFAULT_PR_BODY_TEMPLATE).unwrap();
+
+        assert!(body.contains(
+            "<!-- release-plz:changelog-start my-package 0.1.1 -->\n### Other\n\n- fixed a bug\n<!-- release-plz:changelog-end -->"
+        ));
     }
 }

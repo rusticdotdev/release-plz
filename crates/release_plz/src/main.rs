@@ -76,6 +76,11 @@ async fn run(args: CliArgs) -> anyhow::Result<()> {
             let request = cmd_args.set_version_request(&config)?;
             release_plz_core::set_version::set_version(&request)?;
         }
+        Command::SyncChangelog(cmd_args) => {
+            let config = cmd_args.config.load()?;
+            let request = cmd_args.sync_changelog_request(&config)?;
+            release_plz_core::sync_changelog::sync_changelog(&request).await?;
+        }
     }
     Ok(())
 }

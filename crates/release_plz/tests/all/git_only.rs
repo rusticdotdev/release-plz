@@ -376,9 +376,11 @@ git_tag_name = "{{ package }}-v{{ version }}"
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/lib1-v0.1.0...lib1-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start lib1 0.1.1 -->
 ### Added
 
 - update lib1
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -451,9 +453,11 @@ git_tag_name = "api-v{{ version }}"
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/api-v0.1.0...api-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start api 0.1.1 -->
 ### Added
 
 - update api
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -650,9 +654,11 @@ git_tag_name = "{{ package }}-v{{ version }}"
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/pkg1-v0.1.0...pkg1-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start pkg1 0.1.1 -->
 ### Added
 
 - update pkg1 and pkg2
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `pkg2`
@@ -661,9 +667,11 @@ git_tag_name = "{{ package }}-v{{ version }}"
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/pkg2-v0.1.0...pkg2-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start pkg2 0.1.1 -->
 ### Added
 
 - update pkg1 and pkg2
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -1013,9 +1021,11 @@ publish = false
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/mybin-v0.1.0...mybin-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start mybin 0.1.1 -->
 ### Fixed
 
 - update mybin readme
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -1095,9 +1105,11 @@ git_tag_name = "v{{ version }}"
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/v0.1.0...v0.1.1) - {today}
 
+<!-- release-plz:changelog-start mybin 0.1.1 -->
 ### Fixed
 
 - update mybin readme
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 

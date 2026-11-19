@@ -475,7 +475,7 @@ async fn github_create_release_branch(
 
 /// Commit the changes of the repository on `branch` using the GitHub API.
 /// Returns the SHA of the new commit.
-async fn github_commit_changes(
+pub(crate) async fn github_commit_changes(
     client: &GitClient,
     repository: &Repo,
     branch: &str,
@@ -488,7 +488,10 @@ async fn github_commit_changes(
     Ok(sha)
 }
 
-fn add_changes_and_commit(repository: &Repo, commit_message: &str) -> anyhow::Result<()> {
+pub(crate) fn add_changes_and_commit(
+    repository: &Repo,
+    commit_message: &str,
+) -> anyhow::Result<()> {
     let changes_expect_typechanges = repository.changes_except_typechanges()?;
     repository.add(&changes_expect_typechanges)?;
     repository.commit_signed(commit_message)?;

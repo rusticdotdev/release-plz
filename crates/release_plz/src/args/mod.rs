@@ -7,6 +7,7 @@ mod release;
 mod release_pr;
 pub(crate) mod repo_command;
 mod set_version;
+mod sync_changelog;
 mod update;
 
 use anyhow::bail;
@@ -16,6 +17,7 @@ use clap::{
 };
 use init::Init;
 use set_version::SetVersion;
+use sync_changelog::SyncChangelog;
 use tracing::level_filters::LevelFilter;
 
 use self::{
@@ -116,6 +118,16 @@ pub enum Command {
     /// Note that this command is meant to edit the versions of the packages of your workspace, not the
     /// version of your dependencies.
     SetVersion(SetVersion),
+    /// Copy the changelog edits made in the release Pull Request body into the changelog files.
+    ///
+    /// In the body of the release PR, release-plz wraps the changelog of each package in the
+    /// `<!-- release-plz:changelog-start <package> <version> -->` and
+    /// `<!-- release-plz:changelog-end -->` HTML comments.
+    /// This command replaces the notes of that version in the changelog of the package
+    /// with the text between the comments, and commits the result to the release PR branch.
+    ///
+    /// Run this command with the release PR branch checked out.
+    SyncChangelog(SyncChangelog),
 }
 
 #[derive(ValueEnum, Clone, Copy, Debug, Eq, PartialEq)]

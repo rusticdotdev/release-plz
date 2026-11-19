@@ -27,6 +27,7 @@ const sidebars = {
         "usage/release",
         "usage/init",
         "usage/set-version",
+        "usage/sync-changelog",
         "usage/shell-completion",
         "usage/generate-schema",
       ],

@@ -173,10 +173,12 @@ async fn release_plz_opens_pr_with_default_config() {
 
 ## [0.1.0](https://localhost:3000/{username}/{package}/releases/tag/v0.1.0) - {today}
 
+<!-- release-plz:changelog-start {package} 0.1.0 -->
 ### Other
 
 - cargo init
 - Initial commit
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -251,9 +253,11 @@ async fn release_plz_opens_pr_without_breaking_changes() {
 
 ## [0.1.1](https://localhost:3000/{username}/{package}/compare/v0.1.0...v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {package} 0.1.1 -->
 ### Other
 
 - edit lib with compatible change
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -321,9 +325,11 @@ async fn release_plz_can_do_backport_prs() {
 
 ## [0.1.1](https://localhost:3000/{username}/{package}/compare/v0.1.0...v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {package} 0.1.1 -->
 ### Other
 
 - backport edit
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -446,9 +452,11 @@ Failed in:
 
 ## [0.2.0](https://localhost:3000/{username}/{package}/compare/v0.1.0...v0.2.0) - {today}
 
+<!-- release-plz:changelog-start {package} 0.2.0 -->
 ### Other
 
 - edit lib with breaking change
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -517,9 +525,11 @@ async fn release_plz_updates_binary_when_library_changes() {
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/{library1}-v0.1.0...{library1}-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {library1} 0.1.1 -->
 ### Other
 
 - edit library
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{library2}`
@@ -528,9 +538,11 @@ async fn release_plz_updates_binary_when_library_changes() {
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/{library2}-v0.1.0...{library2}-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {library2} 0.1.1 -->
 ### Other
 
 - updated the following local packages: {library1}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{binary}`
@@ -539,9 +551,11 @@ async fn release_plz_updates_binary_when_library_changes() {
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/{binary}-v0.1.0...{binary}-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {binary} 0.1.1 -->
 ### Other
 
 - updated the following local packages: {library2}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -606,9 +620,11 @@ async fn release_plz_opens_pr_with_two_packages_and_default_config() {
 
 ## [0.1.0](https://localhost:3000/{username}/{repo}/releases/tag/{one}-v0.1.0) - {today}
 
+<!-- release-plz:changelog-start {one} 0.1.0 -->
 ### Other
 
 - cargo init
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{two}`
@@ -617,9 +633,11 @@ async fn release_plz_opens_pr_with_two_packages_and_default_config() {
 
 ## [0.1.0](https://localhost:3000/{username}/{repo}/releases/tag/{two}-v0.1.0) - {today}
 
+<!-- release-plz:changelog-start {two} 0.1.0 -->
 ### Other
 
 - cargo init
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -725,11 +743,13 @@ Changes:
 Package: {package} 0.1.0 -> 0.1.0
 
 Changes:
+<!-- release-plz:changelog-start {package} 0.1.0 -->
 ### Other
 
 - add config file
 - cargo init
-- Initial commit",
+- Initial commit
+<!-- release-plz:changelog-end -->",
         )
         .trim()
     );
@@ -972,9 +992,11 @@ async fn release_plz_detects_cargo_lock_updates_from_registry() {
 
 ## [0.1.1](https://localhost:3000/{username}/{package}/compare/v0.1.0...v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {package} 0.1.1 -->
 ### Other
 
 - update Cargo.lock dependencies
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -1156,6 +1178,7 @@ async fn release_plz_doesnt_add_invalid_labels_to_release_pr() {
 
 #[tokio::test]
 #[cfg_attr(not(feature = "docker-tests"), ignore = "requires Docker")]
+#[expect(clippy::too_many_lines, reason = "the expected PR body is long")]
 async fn release_plz_updates_binary_when_library_has_breaking_changes() {
     let binary = "binary";
     let library1 = "library1";
@@ -1239,9 +1262,11 @@ Failed in:
 
 ## [0.2.0](https://localhost:3000/{username}/{repo}/compare/{library1}-v0.1.0...{library1}-v0.2.0) - {today}
 
+<!-- release-plz:changelog-start {library1} 0.2.0 -->
 ### Other
 
 - breaking change in library
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{library2}`
@@ -1250,9 +1275,11 @@ Failed in:
 
 ## [0.2.1](https://localhost:3000/{username}/{repo}/compare/{library2}-v0.2.0...{library2}-v0.2.1) - {today}
 
+<!-- release-plz:changelog-start {library2} 0.2.1 -->
 ### Other
 
 - updated the following local packages: {library1}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{library3}`
@@ -1261,9 +1288,11 @@ Failed in:
 
 ## [0.3.1](https://localhost:3000/{username}/{repo}/compare/{library3}-v0.3.0...{library3}-v0.3.1) - {today}
 
+<!-- release-plz:changelog-start {library3} 0.3.1 -->
 ### Other
 
 - updated the following local packages: {library2}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{binary}`
@@ -1272,9 +1301,11 @@ Failed in:
 
 ## [1.3.1](https://localhost:3000/{username}/{repo}/compare/{binary}-v1.3.0...{binary}-v1.3.1) - {today}
 
+<!-- release-plz:changelog-start {binary} 1.3.1 -->
 ### Other
 
 - updated the following local packages: {library3}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -1421,9 +1452,11 @@ Failed in:
 
 ## [0.2.0](https://localhost:3000/{username}/{repo}/compare/{library}-v0.1.0...{library}-v0.2.0) - {today}
 
+<!-- release-plz:changelog-start {library} 0.2.0 -->
 ### Other
 
 - breaking change in library
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{binary}`
@@ -1432,9 +1465,11 @@ Failed in:
 
 ## [1.0.1](https://localhost:3000/{username}/{repo}/compare/{binary}-v1.0.0...{binary}-v1.0.1) - {today}
 
+<!-- release-plz:changelog-start {binary} 1.0.1 -->
 ### Other
 
 - updated the following local packages: {library}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -1676,9 +1711,11 @@ async fn release_plz_updates_binary_when_library_changes_commit_regex() {
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/{library1}-v0.1.0...{library1}-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {library1} 0.1.1 -->
 ### Other
 
 - edit library
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{library2}`
@@ -1687,9 +1724,11 @@ async fn release_plz_updates_binary_when_library_changes_commit_regex() {
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/{library2}-v0.1.0...{library2}-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {library2} 0.1.1 -->
 ### Other
 
 - updated the following local packages: {library1}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 ## `{binary}`
@@ -1698,9 +1737,11 @@ async fn release_plz_updates_binary_when_library_changes_commit_regex() {
 
 ## [0.1.1](https://localhost:3000/{username}/{repo}/compare/{binary}-v0.1.0...{binary}-v0.1.1) - {today}
 
+<!-- release-plz:changelog-start {binary} 0.1.1 -->
 ### Other
 
 - updated the following local packages: {library2}
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 
@@ -1781,6 +1822,7 @@ async fn release_plz_updates_changelog_when_version_already_bumped() {
 
 ## [0.2.0](https://localhost:3000/{username}/{package}/compare/v0.1.0...v0.2.0) - {today}
 
+<!-- release-plz:changelog-start {package} 0.2.0 -->
 ### Added
 
 - add new feature
@@ -1788,6 +1830,7 @@ async fn release_plz_updates_changelog_when_version_already_bumped() {
 ### Other
 
 - introduce breaking change
+<!-- release-plz:changelog-end -->
 </blockquote>
 
 

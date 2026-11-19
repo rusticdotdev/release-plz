@@ -36,6 +36,19 @@ pub struct ReleaseInfo {
     semver_check: String,
 }
 
+impl ReleaseInfo {
+    /// Wrap the changelog in the guards that `sync-changelog` looks for in the release PR body.
+    pub(crate) fn guard_changelog(&mut self) {
+        if let Some(changelog) = self.changelog.as_deref().filter(|c| !c.is_empty()) {
+            self.changelog = Some(crate::changelog_guard::guard_changelog(
+                &self.package,
+                &self.next_version,
+                changelog,
+            ));
+        }
+    }
+}
+
 /// Update a local Rust project.
 #[instrument(skip_all)]
 pub async fn update(input: &UpdateRequest) -> anyhow::Result<(PackagesUpdate, TempRepo)> {

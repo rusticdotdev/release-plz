@@ -529,7 +529,8 @@ to check for their existence.
 - `{{ release.title }}` - the changelog title containing a link to the release tag diff.
   *(Optional)*.
 - `{{ release.package }}` - the name of the package being updated.
-- `{{ release.changelog }}` - the generated changelog. *(Optional)*.
+- `{{ release.changelog }}` - the generated changelog, wrapped in the HTML comments that
+  [`release-plz sync-changelog`](usage/sync-changelog.md) looks for. *(Optional)*.
 - `{{ release.previous_version }}` - the previous version of the package.
 - `{{ release.next_version }}` - the version of the package being released.
 - `{{ release.semver_check }}` - the semver check outcome.
